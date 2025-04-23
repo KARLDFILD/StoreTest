@@ -1,11 +1,16 @@
-import HomePage from "./components/HomePage";
+import { Routes, Route } from "react-router-dom";
+import Layout from "./components/Layout";
+import HomePage from "./pages/HomePage";
 
-function App() {
+const App: React.FC = () => {
   return (
-    <div className="container mx-auto p-4 h-screen">
-      <HomePage />
-    </div>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<HomePage />} />
+        <Route path="cart" element={<div>aaaaaaaaaaaaaaaaaa</div>} />
+      </Route>
+    </Routes>
   );
-}
+};
 
 export default App;
