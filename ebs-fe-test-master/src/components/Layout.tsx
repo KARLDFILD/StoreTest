@@ -6,7 +6,9 @@ const Layout: React.FC = () => {
     <div className="min-h-screen flex flex-col">
       <header className="bg-primary text-primary-foreground p-4">
         <div className="container mx-auto flex justify-between items-center">
-          <h1 className="text-xl font-bold">StoreTest</h1>
+          <h1 className="text-xl font-bold">
+            <NavLink to="/">StoreTest</NavLink>
+          </h1>
           <nav className="flex space-x-4">
             <NavLink
               to="/"

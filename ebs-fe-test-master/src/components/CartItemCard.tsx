@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
 import { useCart } from "../store/CartContext";
 import { CartItem } from "../types/types";
+import { toast } from "sonner";
 
 interface CartItemCardProps {
   item: CartItem;
@@ -9,6 +10,11 @@ interface CartItemCardProps {
 
 const CartItemCard: React.FC<CartItemCardProps> = ({ item }) => {
   const { updateQuantity, removeFromCart } = useCart();
+
+  const handleRemoveFromCart = () => {
+    removeFromCart(item.id);
+    toast.success(`${item.title} has been removed from the cart!`);
+  };
 
   return (
     <Card className="flex flex-col sm:flex-row items-center justify-between p-4">
@@ -44,7 +50,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({ item }) => {
           <Button
             variant="destructive"
             size="sm"
-            onClick={() => removeFromCart(item.id)}
+            onClick={handleRemoveFromCart}
           >
             Remove
           </Button>

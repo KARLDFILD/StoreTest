@@ -8,6 +8,7 @@ import {
 } from "./ui/card";
 import { useCart } from "../store/CartContext";
 import { Product } from "../types/types";
+import { toast } from "sonner";
 
 interface ProductCardProps {
   product: Product;
@@ -15,6 +16,11 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { addToCart } = useCart();
+
+  const handleAddToCart = () => {
+    addToCart(product);
+    toast.success(`${product.title} has been added to your cart!`);
+  };
 
   return (
     <Card className="flex flex-col">
@@ -37,7 +43,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </div>
       </CardContent>
       <CardFooter>
-        <Button onClick={() => addToCart(product)} className="w-full">
+        <Button onClick={handleAddToCart} className="w-full">
           Add to Cart
         </Button>
       </CardFooter>
