@@ -9,19 +9,14 @@ import {
 import { Button } from "../components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "../components/ui/alert";
 import { Loader } from "lucide-react";
-
-interface Product {
-  id: number;
-  title: string;
-  price: number;
-  category: string;
-  image: string;
-}
+import { useCart } from "../store/CartContext";
+import { Product } from "../types/types";
 
 const HomePage: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { addToCart } = useCart();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -71,7 +66,9 @@ const HomePage: React.FC = () => {
                 <p className="text-xl font-bold">${product.price}</p>
               </CardContent>
               <CardFooter>
-                <Button className="w-full">Add to Cart</Button>
+                <Button onClick={() => addToCart(product)} className="w-full">
+                  Add to Cart
+                </Button>
               </CardFooter>
             </Card>
           ))}
