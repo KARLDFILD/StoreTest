@@ -9,6 +9,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../components/ui/select";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "../components/ui/pagination";
 import { Loader } from "lucide-react";
 import ProductCard from "../components/ProductCard";
 import { Product } from "../types/types";
@@ -22,6 +30,8 @@ const HomePage: React.FC = () => {
   const [sortOrder, setSortOrder] = useState<"default" | "asc" | "desc">(
     "default"
   );
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 9;
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -98,18 +108,32 @@ const HomePage: React.FC = () => {
     setPriceRange([priceLimits.min, priceLimits.max]);
   }, [priceLimits]);
 
+  const totalPages = Math.ceil(sortedProducts.length / productsPerPage);
+  const paginatedProducts = useMemo(() => {
+    const startIndex = (currentPage - 1) * productsPerPage;
+    return sortedProducts.slice(startIndex, startIndex + productsPerPage);
+  }, [sortedProducts, currentPage]);
+
   const handleCategoryChange = (category: string, checked: boolean) => {
     setSelectedCategories((prev) =>
       checked ? [...prev, category] : prev.filter((cat) => cat !== category)
     );
+    setCurrentPage(1);
   };
 
   const handlePriceChange = (value: number[]) => {
     setPriceRange(value as [number, number]);
+    setCurrentPage(1);
   };
 
   const handleSortChange = (value: "default" | "asc" | "desc") => {
     setSortOrder(value);
+    setCurrentPage(1);
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -177,16 +201,58 @@ const HomePage: React.FC = () => {
           </div>
           <div className="w-full sm:w-3/4">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {sortedProducts.length === 0 ? (
+              {paginatedProducts.length === 0 ? (
                 <p className="text-center col-span-full">
                   No products match the selected filters
                 </p>
               ) : (
-                sortedProducts.map((product) => (
+                paginatedProducts.map((product) => (
                   <ProductCard key={product.id} product={product} />
                 ))
               )}
             </div>
+            {totalPages > 1 && (
+              <Pagination className="mt-6">
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious
+                      onClick={() =>
+                        handlePageChange(Math.max(1, currentPage - 1))
+                      }
+                      className={
+                        currentPage === 1
+                          ? "pointer-events-none opacity-50"
+                          : ""
+                      }
+                    />
+                  </PaginationItem>
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                    (page) => (
+                      <PaginationItem key={page}>
+                        <PaginationLink
+                          onClick={() => handlePageChange(page)}
+                          isActive={currentPage === page}
+                        >
+                          {page}
+                        </PaginationLink>
+                      </PaginationItem>
+                    )
+                  )}
+                  <PaginationItem>
+                    <PaginationNext
+                      onClick={() =>
+                        handlePageChange(Math.min(totalPages, currentPage + 1))
+                      }
+                      className={
+                        currentPage === totalPages
+                          ? "pointer-events-none opacity-50"
+                          : ""
+                      }
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            )}
           </div>
         </div>
       )}
