@@ -20,19 +20,21 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     <Card className="flex flex-col">
       <CardHeader>
         <CardTitle className="text-lg">
-          {product.title.length > 70
-            ? `${product.title.slice(0, 70)}... `
+          {product.title.length > 50
+            ? `${product.title.slice(0, 50)}... `
             : product.title}
         </CardTitle>
       </CardHeader>
-      <CardContent className="flex-grow">
+      <CardContent className="flex flex-col flex-grow">
         <img
           src={product.image}
           alt={product.title}
           className="h-48 w-full object-contain mb-4"
         />
-        <p className="text-gray-600">{product.category}</p>
-        <p className="text-xl font-bold">${product.price}</p>
+        <div className="mt-auto">
+          <p className="text-gray-600">{product.category}</p>
+          <p className="text-xl font-bold">${product.price}</p>
+        </div>
       </CardContent>
       <CardFooter>
         <Button onClick={() => addToCart(product)} className="w-full">

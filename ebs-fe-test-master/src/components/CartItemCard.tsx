@@ -19,10 +19,10 @@ const CartItemCard: React.FC<CartItemCardProps> = ({ item }) => {
         <img
           src={item.image}
           alt={item.title}
-          className="h-16 w-16 object-contain"
+          className="h-16 w-16 min-w-16 min-h-16 object-contain"
         />
         <div className="text-center sm:text-left">
-          <p className="text-gray-600">{item.category}</p>
+          <p className="text-gray-600 w-30">{item.category}</p>
           <p className="font-bold">${item.price}</p>
         </div>
         <div className="flex items-center gap-2">
