@@ -19,6 +19,10 @@ const HomePage: React.FC = () => {
   const productsPerPage = 9;
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
+  useEffect(() => {
     const fetchProducts = async () => {
       try {
         setLoading(true);

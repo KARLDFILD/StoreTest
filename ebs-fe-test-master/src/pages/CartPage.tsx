@@ -6,9 +6,14 @@ import { CartItem } from "../types/types";
 import { toast } from "sonner";
 import { Input } from "../components/ui/input";
 import { NavLink } from "react-router-dom";
+import { useEffect } from "react";
 
 const CartPage: React.FC = () => {
   const { cart, clearCart } = useCart();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
 
   const totalPrice = cart.reduce(
     (sum, item: CartItem) => sum + item.price * item.quantity,
