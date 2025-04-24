@@ -25,10 +25,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   return (
     <Card className="flex flex-col">
       <CardHeader>
-        <CardTitle className="text-lg">
-          {product.title.length > 50
-            ? `${product.title.slice(0, 50)}... `
-            : product.title}
+        <CardTitle className="text-lg truncate" title={product.title}>
+          {product.title}
         </CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col flex-grow">
