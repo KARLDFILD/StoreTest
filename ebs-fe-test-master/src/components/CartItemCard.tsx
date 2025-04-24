@@ -1,8 +1,9 @@
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { Card } from "./ui/card";
 import { Button } from "./ui/button";
 import { useCart } from "../store/CartContext";
 import { CartItem } from "../types/types";
 import { toast } from "sonner";
+import { Trash, Minus, Plus } from "lucide-react";
 
 interface CartItemCardProps {
   item: CartItem;
@@ -17,45 +18,101 @@ const CartItemCard: React.FC<CartItemCardProps> = ({ item }) => {
   };
 
   return (
-    <Card className="flex flex-col sm:flex-row items-center justify-between p-4">
-      <CardHeader className="p-0 w-full sm:max-w-[30%] md:max-w-[45%]">
-        <CardTitle className="text-lg">{item.title}</CardTitle>
-      </CardHeader>
-      <CardContent className="flex flex-col sm:flex-row items-center gap-4 p-0">
-        <img
-          src={item.image}
-          alt={item.title}
-          className="h-16 w-16 min-w-16 min-h-16 object-contain"
-        />
-        <div className="text-center sm:text-left">
-          <p className="text-gray-600 w-30">{item.category}</p>
-          <p className="font-bold">${item.price}</p>
+    <Card className="overflow-hidden">
+      <div className="md:hidden">
+        <div className="flex items-center p-3 border-b">
+          <img
+            src={item.image}
+            alt={item.title}
+            className="h-16 w-16 object-contain bg-white rounded p-1"
+          />
+          <div className="ml-3 flex-1">
+            <h3 className="font-medium text-base line-clamp-2">{item.title}</h3>
+            <p className="text-xs text-gray-500">{item.category}</p>
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => updateQuantity(item.id, item.quantity - 1)}
-          >
-            -
-          </Button>
-          <span>{item.quantity}</span>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => updateQuantity(item.id, item.quantity + 1)}
-          >
-            +
-          </Button>
+
+        <div className="p-3 flex justify-between items-center">
+          <p className="font-bold text-lg">${item.price}</p>
+
+          <div className="flex items-center gap-2">
+            <div className="flex items-center border rounded-md">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-8 px-2"
+                onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                disabled={item.quantity <= 1}
+              >
+                <Minus size={16} />
+              </Button>
+              <span className="w-8 text-center">{item.quantity}</span>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-8 px-2"
+                onClick={() => updateQuantity(item.id, item.quantity + 1)}
+              >
+                <Plus size={16} />
+              </Button>
+            </div>
+
+            <Button
+              variant="destructive"
+              size="sm"
+              className="h-8 w-8 p-0"
+              onClick={handleRemoveFromCart}
+            >
+              <Trash size={16} />
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      <div className="hidden md:flex items-center justify-between p-4">
+        <div className="flex items-center flex-1">
+          <img
+            src={item.image}
+            alt={item.title}
+            className="h-16 w-16 object-contain bg-white rounded p-1 mr-4"
+          />
+          <div>
+            <h3 className="font-medium text-lg">{item.title}</h3>
+            <p className="text-sm text-gray-500">{item.category}</p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-6">
+          <p className="font-bold text-lg min-w-16 text-right">${item.price}</p>
+
+          <div className="flex items-center border rounded-md">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => updateQuantity(item.id, item.quantity - 1)}
+              disabled={item.quantity <= 1}
+            >
+              <Minus size={16} />
+            </Button>
+            <span className="w-8 text-center">{item.quantity}</span>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => updateQuantity(item.id, item.quantity + 1)}
+            >
+              <Plus size={16} />
+            </Button>
+          </div>
+
           <Button
             variant="destructive"
             size="sm"
             onClick={handleRemoveFromCart}
           >
-            Remove
+            <Trash size={16} />
           </Button>
         </div>
-      </CardContent>
+      </div>
     </Card>
   );
 };
