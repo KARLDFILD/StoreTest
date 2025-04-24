@@ -1,24 +1,9 @@
 import { useEffect, useState, useMemo } from "react";
 import { Alert, AlertDescription, AlertTitle } from "../components/ui/alert";
-import { Checkbox } from "../components/ui/checkbox";
-import { Slider } from "../components/ui/slider";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../components/ui/select";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "../components/ui/pagination";
 import { Loader } from "lucide-react";
 import ProductCard from "../components/ProductCard";
+import ProductFilters from "../components/ProductFilters";
+import ProductPagination from "../components/ProductPagination";
 import { Product } from "../types/types";
 
 const HomePage: React.FC = () => {
@@ -149,56 +134,16 @@ const HomePage: React.FC = () => {
         </Alert>
       ) : (
         <div className="flex flex-col sm:flex-row gap-8">
-          <div className="w-full sm:w-1/4">
-            <h2 className="text-lg font-semibold mb-4">Filters</h2>
-            <div className="mb-6">
-              <h3 className="text-md font-medium mb-2">Sort By</h3>
-              <Select value={sortOrder} onValueChange={handleSortChange}>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Sort By" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="default">Default</SelectItem>
-                  <SelectItem value="asc">Price: Low to High</SelectItem>
-                  <SelectItem value="desc">Price: High to Low</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="mb-6">
-              <h3 className="text-md font-medium mb-2">Categories</h3>
-              {categories.map((category) => (
-                <div
-                  key={category}
-                  className="flex items-center space-x-2 mb-2"
-                >
-                  <Checkbox
-                    id={category}
-                    checked={selectedCategories.includes(category)}
-                    onCheckedChange={(checked) =>
-                      handleCategoryChange(category, checked as boolean)
-                    }
-                  />
-                  <label htmlFor={category} className="text-sm">
-                    {category}
-                  </label>
-                </div>
-              ))}
-            </div>
-            <div>
-              <h3 className="text-md font-medium mb-2">Price Range</h3>
-              <Slider
-                value={priceRange}
-                onValueChange={handlePriceChange}
-                min={priceLimits.min}
-                max={priceLimits.max}
-                step={1}
-                className="mb-2"
-              />
-              <p className="text-sm text-gray-600">
-                ${priceRange[0]} - ${priceRange[1]}
-              </p>
-            </div>
-          </div>
+          <ProductFilters
+            categories={categories}
+            selectedCategories={selectedCategories}
+            priceRange={priceRange}
+            sortOrder={sortOrder}
+            priceLimits={priceLimits}
+            onCategoryChange={handleCategoryChange}
+            onPriceChange={handlePriceChange}
+            onSortChange={handleSortChange}
+          />
           <div className="w-full sm:w-3/4">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {paginatedProducts.length === 0 ? (
@@ -212,46 +157,11 @@ const HomePage: React.FC = () => {
               )}
             </div>
             {totalPages > 1 && (
-              <Pagination className="mt-6">
-                <PaginationContent>
-                  <PaginationItem>
-                    <PaginationPrevious
-                      onClick={() =>
-                        handlePageChange(Math.max(1, currentPage - 1))
-                      }
-                      className={
-                        currentPage === 1
-                          ? "pointer-events-none opacity-50"
-                          : ""
-                      }
-                    />
-                  </PaginationItem>
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                    (page) => (
-                      <PaginationItem key={page}>
-                        <PaginationLink
-                          onClick={() => handlePageChange(page)}
-                          isActive={currentPage === page}
-                        >
-                          {page}
-                        </PaginationLink>
-                      </PaginationItem>
-                    )
-                  )}
-                  <PaginationItem>
-                    <PaginationNext
-                      onClick={() =>
-                        handlePageChange(Math.min(totalPages, currentPage + 1))
-                      }
-                      className={
-                        currentPage === totalPages
-                          ? "pointer-events-none opacity-50"
-                          : ""
-                      }
-                    />
-                  </PaginationItem>
-                </PaginationContent>
-              </Pagination>
+              <ProductPagination
+                totalPages={totalPages}
+                currentPage={currentPage}
+                onPageChange={handlePageChange}
+              />
             )}
           </div>
         </div>
