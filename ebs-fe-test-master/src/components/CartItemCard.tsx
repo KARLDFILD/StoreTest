@@ -74,6 +74,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({ item }) => {
           <img
             src={item.image}
             alt={item.title}
+            loading="lazy"
             className="h-16 w-16 object-contain bg-white rounded p-1 mr-4"
           />
           <div>

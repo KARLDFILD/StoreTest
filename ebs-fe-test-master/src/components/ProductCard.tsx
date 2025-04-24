@@ -33,6 +33,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         <img
           src={product.image}
           alt={product.title}
+          loading="lazy"
           className="h-48 w-full object-contain mb-4"
         />
         <div className="mt-auto">
