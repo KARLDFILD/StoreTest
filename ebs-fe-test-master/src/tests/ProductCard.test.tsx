@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
 
 import { render, screen, fireEvent } from "@testing-library/react";
-import ProductCard from "./ProductCard";
+import ProductCard from "../components/ProductCard";
 import { useCart } from "../store/CartContext";
 import { toast } from "sonner";
 import { Product } from "../types/types";
