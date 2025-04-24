@@ -31,3 +31,7 @@ StoreTest is a project that implements a catalogue of goods with the ability to 
 ## Additional message
 
 FakeStoreAPI allows you to limit the number of products returned using the limit parameter (e.g. /products?limit=9 returns the first 9 products). However, the API does not support an offset parameter or similar, which would allow you to specify which product to start sampling from. Without offset it is impossible to request, for example, products 10 to 18, which makes server-side pagination impossible.
+
+## Deployment Link
+
+(https://store-test-sand.vercel.app/)
